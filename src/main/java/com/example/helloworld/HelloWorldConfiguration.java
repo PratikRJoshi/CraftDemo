@@ -1,3 +1,5 @@
+package com.example.helloworld;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.dropwizard.Configuration;
 import javax.validation.constraints.NotEmpty;
