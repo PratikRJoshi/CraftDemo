@@ -1,9 +1,12 @@
 package com.example.helloworld;
 
+import com.example.dao.UserDAO;
 import com.example.helloworld.resources.HelloWorldResource;
 import io.dropwizard.Application;
+import io.dropwizard.jdbi.DBIFactory;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
+import org.skife.jdbi.v2.DBI;
 
 public class HelloWorldApplication extends Application<HelloWorldConfiguration> {
     public static void main(String[] args) throws Exception {
@@ -28,6 +31,12 @@ public class HelloWorldApplication extends Application<HelloWorldConfiguration> 
                 configuration.getDefaultName()
         );
         environment.jersey().register(resource);
+
+        final DBIFactory factory = new DBIFactory();
+        final DBI jdbi = factory.build(environment, configuration.getDataSourceFactory(), "mysql");
+        final UserDAO dao = jdbi.onDemand(UserDAO.class);
+
+        environment.jersey().register(new HelloWorldResource(dao));
     }
 
 }

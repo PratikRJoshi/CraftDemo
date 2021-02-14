@@ -1,11 +1,15 @@
 package com.example.helloworld.resources;
 
+import com.example.dao.UserDAO;
 import com.example.helloworld.api.Saying;
 import com.codahale.metrics.annotation.Timed;
 
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
@@ -22,9 +26,15 @@ import javax.ws.rs.core.Response;
 @Path("/hello-world")
 @Produces(MediaType.APPLICATION_JSON)
 public class HelloWorldResource {
-    private final String template;
-    private final String defaultName;
-    private final AtomicLong counter;
+    private String template;
+    private String defaultName;
+    private AtomicLong counter;
+
+    private UserDAO userDAO;
+
+    public HelloWorldResource(UserDAO userDAO){
+        this.userDAO = userDAO;
+    }
 
     public HelloWorldResource(String template, String defaultName) {
         this.template = template;
@@ -47,5 +57,18 @@ public class HelloWorldResource {
         System.out.println("Got the input in the POST method as : " + (input));
 
         return Response.status(Response.Status.ACCEPTED).build();
+    }
+
+    @Path("{id}")
+    @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response updateEmail(@PathParam("id") String id, String email) {
+        if (this.userDAO.existsBrand(id)) {
+            this.userDAO.updateEmail(id, email);
+            return Response.status(Response.Status.ACCEPTED).build();
+        } else {
+            return Response.status(Response.Status.ACCEPTED).build();
+        }
     }
 }

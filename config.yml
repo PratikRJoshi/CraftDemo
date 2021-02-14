@@ -1,2 +1,14 @@
 template: Hello, %s!
 defaultName: Stranger
+
+database:
+  # the name of the JDBC driver, mysql in our case
+  driverClass: com.mysql.jdbc.Driver
+  # the username
+  user: root
+  # the password
+  password: pwd
+  # the JDBC URL; the database is called myInputDB
+  url: jdbc:mysql://localhost:3306/myInputDB
+  # the SQL query to run when validating a connection's liveness
+  validationQuery: "SELECT 1"
