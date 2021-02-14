@@ -20,6 +20,9 @@ Create db, tables and insert some data in the table:
  	insert into MyGuests (firstname, lastname, email) values ("Pratik", "Joshi", "pratikjo@usc.edu");
  	select * from MyGuests;
 
+ 	CREATE TABLE YELP_NEARBY_RESTAURANTS (id INT(6) UNSIGNED AUTO_INCREMENT, name VARCHAR(30) NOT NULL PRIMARY KEY,
+ 	                                        URL VARCHAR(300), RATING DOUBLE, ADDRESS VARCHAR(100));
+
 Connect to the db running inside docker from local machine:
 	/usr/local/mysql-8.0.23-macos10.15-x86_64/bin/mysql -h 127.0.0.1 --port 3306 -uroot -p
 
@@ -27,7 +30,7 @@ Sample mysql command to run from outside:
 	docker exec -it some-mysql mysql -uroot -ppwd -e 'use myInputDB; select * from MyGuests;'
 
 
-Run the applicaton inside IntelliJ - 
+Run the application inside IntelliJ -
 https://blog.indrek.io/articles/running-a-dropwizard-application-in-intellij-eclipse-and-netbeans/
 
 Debug the application from IntelliJ - 

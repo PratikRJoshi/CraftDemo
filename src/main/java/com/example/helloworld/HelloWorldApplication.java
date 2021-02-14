@@ -2,6 +2,7 @@ package com.example.helloworld;
 
 import com.example.dao.UserDAO;
 import com.example.helloworld.resources.HelloWorldResource;
+import com.example.helloworld.resources.YelpResource;
 import io.dropwizard.Application;
 import io.dropwizard.jdbi.DBIFactory;
 import io.dropwizard.setup.Bootstrap;
@@ -32,7 +33,9 @@ public class HelloWorldApplication extends Application<HelloWorldConfiguration> 
         final UserDAO dao = jdbi.onDemand(UserDAO.class);
 
         environment.jersey().register(new HelloWorldResource(configuration.getTemplate(),
-                                                             configuration.getDefaultName(), dao));
+                                                             configuration.getDefaultName(),
+                                                             dao));
+        environment.jersey().register(new YelpResource(dao));
     }
 
 }
