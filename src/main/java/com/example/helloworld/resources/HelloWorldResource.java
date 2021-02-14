@@ -32,11 +32,8 @@ public class HelloWorldResource {
 
     private UserDAO userDAO;
 
-    public HelloWorldResource(UserDAO userDAO){
+    public HelloWorldResource(String template, String defaultName, UserDAO userDAO) {
         this.userDAO = userDAO;
-    }
-
-    public HelloWorldResource(String template, String defaultName) {
         this.template = template;
         this.defaultName = defaultName;
         this.counter = new AtomicLong();
@@ -64,11 +61,13 @@ public class HelloWorldResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces({MediaType.APPLICATION_JSON})
     public Response updateEmail(@PathParam("id") String id, String email) {
-        if (this.userDAO.existsBrand(id)) {
+        System.out.println("Received ID: " + id);
+        System.out.println("Received Email: " + email);
+        if (userDAO.existsBrand(id)) {
             this.userDAO.updateEmail(id, email);
             return Response.status(Response.Status.ACCEPTED).build();
         } else {
-            return Response.status(Response.Status.ACCEPTED).build();
+            return Response.status(Response.Status.NO_CONTENT).build();
         }
     }
 }

@@ -26,17 +26,13 @@ public class HelloWorldApplication extends Application<HelloWorldConfiguration> 
     @Override
     public void run(HelloWorldConfiguration configuration,
                     Environment environment) {
-        final HelloWorldResource resource = new HelloWorldResource(
-                configuration.getTemplate(),
-                configuration.getDefaultName()
-        );
-        environment.jersey().register(resource);
 
         final DBIFactory factory = new DBIFactory();
         final DBI jdbi = factory.build(environment, configuration.getDataSourceFactory(), "mysql");
         final UserDAO dao = jdbi.onDemand(UserDAO.class);
 
-        environment.jersey().register(new HelloWorldResource(dao));
+        environment.jersey().register(new HelloWorldResource(configuration.getTemplate(),
+                                                             configuration.getDefaultName(), dao));
     }
 
 }
