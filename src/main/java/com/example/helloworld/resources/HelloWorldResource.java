@@ -60,8 +60,6 @@ public class HelloWorldResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces({MediaType.APPLICATION_JSON})
     public Response updateEmail(User user) { // https://stackoverflow.com/questions/34289380/how-to-read-json-request-body-using-dropwizard/34290191
-        System.out.println("Received ID: " + user.id);
-        System.out.println("Received Email: " + user.email);
         if (userDAO.existsBrand(user.id)) { // NPE error : https://github.com/jdbi/jdbi/issues/1187#issuecomment-399198314
             this.userDAO.updateEmail(user.id, user.email);
             return Response.status(Response.Status.ACCEPTED).build();

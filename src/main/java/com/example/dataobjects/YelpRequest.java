@@ -10,6 +10,10 @@ public class YelpRequest {
     @Nullable
     public int limit;
 
-    @JsonProperty("zipCode")
-    public int zipCode;
+    @Nullable
+    @JsonProperty("zipcode")
+    public int zipcode;
+
+    @JsonProperty("name")
+    public String name;
 }

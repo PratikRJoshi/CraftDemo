@@ -1,6 +1,7 @@
 package com.example.helloworld.resources;
 
 import com.example.dao.UserDAO;
+import com.example.dataobjects.TableResponseFieldObject;
 import com.example.dataobjects.YelpRequest;
 import com.example.dataobjects.YelpRestaurantResponse;
 import com.example.helloworld.api.YelpResponseHandler;
@@ -78,16 +79,31 @@ public class YelpResource {
         return Response.status(Response.Status.OK).build();
     }
 
-    // TODO: another endpoint to query and get the Yelp results from the db
     @Path("/getRestaurantsByZip")
     @GET
     public Response getRestaurantsByZip(YelpRequest yelpRequest){
         // TODO: Validation
 
-        int zipCode = yelpRequest.getZipCode();
-        boolean b = userDAO.selectByZip(zipCode);
+//        int zipcode = yelpRequest.getZipcode();
+//        System.out.println("Zipcode = " + zipcode);
+//        boolean b = userDAO.selectByZip(zipcode);
+
+        String name = yelpRequest.getName();
+        System.out.println("name = " + name);
+        boolean b = userDAO.selectByZip(name);
+
+        List<TableResponseFieldObject> tableResponseFieldObjects = userDAO.selectAllFromTable();
+
+        for (TableResponseFieldObject tableResponseFieldObject : tableResponseFieldObjects){
+            System.out.println(tableResponseFieldObject.toString());
+        }
+
+/*
         System.out.println(b);
-        if (b){
+        System.out.println("size = " + tableResponseFieldObjects.size());
+        System.out.println(tableResponseFieldObjects.get(0).toString());
+*/
+        if (tableResponseFieldObjects.size() > 0){
             return Response.status(Response.Status.OK).build();
         }
 

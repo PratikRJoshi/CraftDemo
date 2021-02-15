@@ -1,9 +1,12 @@
 package com.example.dao;
 
+import com.example.dataobjects.TableResponseFieldObject;
 import com.example.helloworld.logging.LogSqlFactory;
+import java.util.List;
 import org.skife.jdbi.v2.sqlobject.Bind;
 import org.skife.jdbi.v2.sqlobject.SqlQuery;
 import org.skife.jdbi.v2.sqlobject.SqlUpdate;
+import org.skife.jdbi.v2.sqlobject.customizers.Mapper;
 
 @LogSqlFactory
 public interface UserDAO {
@@ -23,6 +26,10 @@ public interface UserDAO {
                                     @Bind("address") String address,
                                     @Bind("zipcode") int zipcode);
 
-    @SqlQuery("SELECT * FROM YELP_NEARBY_RESTAURANTS WHERE ZIPCODE = :zipCode")
-    boolean selectByZip( @Bind("zipCode") int zipcode);
+    @SqlQuery("select * from YELP_NEARBY_RESTAURANTS where name = :name")
+    boolean selectByZip( @Bind("name") String name);
+
+    @SqlQuery("select * from YELP_NEARBY_RESTAURANTS")
+    @Mapper(TableMapper.class)
+    List<TableResponseFieldObject> selectAllFromTable();
 }
