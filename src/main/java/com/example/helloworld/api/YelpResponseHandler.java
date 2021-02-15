@@ -12,11 +12,12 @@ import org.json.simple.parser.ParseException;
 public class YelpResponseHandler {
 
     public static final String RESTAURANT_NAME = "name";
-    public static final String YELP_URL = "yelpURL";
+    public static final String URL = "url";
     public static final String LOCATION = "location";
     public static final String DISPLAY_ADDRESS = "display_address";
     public static final String RATING = "rating";
     public static final String BUSINESSES = "businesses";
+    public static final String ZIP_CODE = "zip_code";
 
     // TODO: Return response status with result object inside it
     public static List<YelpRestaurantResponse> parseYelpResponse(String rawResponse){
@@ -32,7 +33,7 @@ public class YelpResponseHandler {
                 builder.restaurantName(name);
 
                 // yelpURL
-                String yelpURL = ((JSONObject) business).get(YELP_URL).toString();
+                String yelpURL = ((JSONObject) business).get(URL).toString();
                 builder.restaurantURL(yelpURL);
 
                 // display_address
@@ -47,6 +48,11 @@ public class YelpResponseHandler {
 
                 double rating = (double) ((JSONObject) business).get(RATING);
                 builder.restaurantRating(rating);
+
+                String zip_code = ((JSONObject) ((JSONObject) business)
+                        .get(LOCATION))
+                        .get(ZIP_CODE).toString();
+                builder.zipCode(Integer.parseInt(zip_code));
 
                 restaurantResponsesList.add(builder.build());
             }

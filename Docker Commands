@@ -20,8 +20,8 @@ Create db, tables and insert some data in the table:
  	insert into MyGuests (firstname, lastname, email) values ("Pratik", "Joshi", "pratikjo@usc.edu");
  	select * from MyGuests;
 
- 	CREATE TABLE YELP_NEARBY_RESTAURANTS (id INT(6) UNSIGNED AUTO_INCREMENT, name VARCHAR(30) NOT NULL PRIMARY KEY,
- 	                                        URL VARCHAR(300), RATING DOUBLE, ADDRESS VARCHAR(100));
+ 	CREATE TABLE YELP_NEARBY_RESTAURANTS (id INT(6) UNSIGNED, name VARCHAR(100) NOT NULL PRIMARY KEY,
+ 	                                        URL VARCHAR(300), RATING DOUBLE, ADDRESS VARCHAR(100), ZIPCODE INT(5));
 
 Connect to the db running inside docker from local machine:
 	/usr/local/mysql-8.0.23-macos10.15-x86_64/bin/mysql -h 127.0.0.1 --port 3306 -uroot -p

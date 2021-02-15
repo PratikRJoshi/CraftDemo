@@ -1,6 +1,7 @@
 package com.example.helloworld.resources;
 
 import com.example.dao.UserDAO;
+import com.example.dataobjects.YelpRequest;
 import com.example.dataobjects.YelpRestaurantResponse;
 import com.example.helloworld.api.YelpResponseHandler;
 import java.io.BufferedReader;
@@ -10,6 +11,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
 import java.util.Optional;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -61,7 +63,8 @@ public class YelpResource {
                         userDAO.insertIntoRestaurantsTable(restaurantResponse.restaurantName,
                                                            restaurantResponse.restaurantURL,
                                                            restaurantResponse.restaurantRating,
-                                                           restaurantResponse.restaurantAddress);
+                                                           restaurantResponse.restaurantAddress,
+                                                           restaurantResponse.zipCode);
                     }
                 }
             } catch (IOException e) {
@@ -76,5 +79,18 @@ public class YelpResource {
     }
 
     // TODO: another endpoint to query and get the Yelp results from the db
+    @Path("/getRestaurantsByZip")
+    @GET
+    public Response getRestaurantsByZip(YelpRequest yelpRequest){
+        // TODO: Validation
 
+        int zipCode = yelpRequest.getZipCode();
+        boolean b = userDAO.selectByZip(zipCode);
+        System.out.println(b);
+        if (b){
+            return Response.status(Response.Status.OK).build();
+        }
+
+        return Response.status(Response.Status.NO_CONTENT).build();
+    }
 }

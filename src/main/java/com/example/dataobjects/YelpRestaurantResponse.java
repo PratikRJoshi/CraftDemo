@@ -10,5 +10,6 @@ public class YelpRestaurantResponse {
     public String restaurantURL;
     public double restaurantRating;
     public String restaurantAddress;
+    public int zipCode;
 
 }
