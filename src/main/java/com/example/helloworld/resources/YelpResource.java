@@ -84,13 +84,7 @@ public class YelpResource {
     public Response getRestaurantsByZip(YelpRequest yelpRequest){
         // TODO: Validation
 
-//        int zipcode = yelpRequest.getZipcode();
-//        System.out.println("Zipcode = " + zipcode);
-//        boolean b = userDAO.selectByZip(zipcode);
-
         String name = yelpRequest.getName();
-        System.out.println("name = " + name);
-        boolean b = userDAO.selectByZip(name);
 
         List<TableResponseFieldObject> tableResponseFieldObjects = userDAO.selectAllFromTable();
 
@@ -98,11 +92,6 @@ public class YelpResource {
             System.out.println(tableResponseFieldObject.toString());
         }
 
-/*
-        System.out.println(b);
-        System.out.println("size = " + tableResponseFieldObjects.size());
-        System.out.println(tableResponseFieldObjects.get(0).toString());
-*/
         if (tableResponseFieldObjects.size() > 0){
             return Response.status(Response.Status.OK).build();
         }

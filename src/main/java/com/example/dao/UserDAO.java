@@ -26,10 +26,10 @@ public interface UserDAO {
                                     @Bind("address") String address,
                                     @Bind("zipcode") int zipcode);
 
-    @SqlQuery("select * from YELP_NEARBY_RESTAURANTS where name = :name")
-    boolean selectByZip( @Bind("name") String name);
-
     @SqlQuery("select * from YELP_NEARBY_RESTAURANTS")
     @Mapper(TableMapper.class)
     List<TableResponseFieldObject> selectAllFromTable();
+
+    @SqlQuery("select * from YELP_NEARBY_RESTAURANTS where name = :name")
+    boolean selectByZip( @Bind("name") String name);
 }

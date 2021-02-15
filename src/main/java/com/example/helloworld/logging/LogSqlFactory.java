@@ -13,6 +13,7 @@ import org.skife.jdbi.v2.sqlobject.SqlStatementCustomizer;
 import org.skife.jdbi.v2.sqlobject.SqlStatementCustomizerFactory;
 import org.skife.jdbi.v2.sqlobject.SqlStatementCustomizingAnnotation;
 import org.skife.jdbi.v2.tweak.StatementCustomizer;
+
 // https://stackoverflow.com/questions/23564383/how-to-print-the-sqlquery-annotation-in-jdbi-sql-api
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
@@ -20,6 +21,13 @@ import org.skife.jdbi.v2.tweak.StatementCustomizer;
 public @interface LogSqlFactory {
 
     class Factory implements SqlStatementCustomizerFactory {
+
+        private static void logSql(StatementContext context) {
+            System.out.println("Raw SQL:\n" + context.getRawSql());
+            System.out.println("Parsed SQL:\n" + context.getRewrittenSql());
+            System.out.println("Bindings: \n" + context.getBinding());
+        }
+
         @Override
         public SqlStatementCustomizer createForMethod(Annotation annotation, Class sqlObjectType, Method method) {
             return null;
@@ -31,14 +39,14 @@ public @interface LogSqlFactory {
             return sqlStatement -> sqlStatement.addStatementCustomizer(new StatementCustomizer() {
                 @Override
                 public void beforeExecution(PreparedStatement stmt, StatementContext ctx) throws SQLException {
-                            System.out.println("Before execution:\n" + stmt.toString());
-//                            logSql(sqlStatement.getContext());
+                    System.out.println("Before execution:\n" + stmt.toString());
+//                  logSql(sqlStatement.getContext());
                 }
 
                 @Override
                 public void afterExecution(PreparedStatement stmt, StatementContext ctx) throws SQLException {
-//                    System.out.println("After execution:\n");
-//                    logSql(sqlStatement.getContext());
+                    System.out.println("After execution:\n" + stmt.toString());
+//                  logSql(sqlStatement.getContext());
                 }
 
                 @Override
@@ -52,12 +60,6 @@ public @interface LogSqlFactory {
         public SqlStatementCustomizer createForParameter(Annotation annotation, Class sqlObjectType, Method method,
                                                          Object arg) {
             return null;
-        }
-
-        private static void logSql(StatementContext context) {
-            System.out.println("Raw SQL:\n" + context.getRawSql());
-            System.out.println("Parsed SQL:\n" + context.getRewrittenSql());
-            System.out.println("Bindings: \n" + context.getBinding());
         }
     }
 }
