@@ -79,14 +79,44 @@ public class YelpResource {
         return Response.status(Response.Status.OK).build();
     }
 
+    @Path("/getAllRestaurants")
+    @GET
+    public Response getAllRestaurants(YelpRequest yelpRequest){
+        // TODO: Validation
+
+        List<TableResponseFieldObject> tableResponseFieldObjects = userDAO.selectAllFromTable();
+
+        if (tableResponseFieldObjects.size() > 0){
+            return Response.status(Response.Status.OK).build();
+        }
+
+        return Response.status(Response.Status.NO_CONTENT).build();
+    }
+
     @Path("/getRestaurantsByZip")
     @GET
     public Response getRestaurantsByZip(YelpRequest yelpRequest){
         // TODO: Validation
 
-        String name = yelpRequest.getName();
+        List<TableResponseFieldObject> tableResponseFieldObjects = userDAO.selectByZip(yelpRequest.getZipcode());
 
-        List<TableResponseFieldObject> tableResponseFieldObjects = userDAO.selectAllFromTable();
+        for (TableResponseFieldObject tableResponseFieldObject : tableResponseFieldObjects){
+            System.out.println(tableResponseFieldObject.toString());
+        }
+
+        if (tableResponseFieldObjects.size() > 0){
+            return Response.status(Response.Status.OK).build();
+        }
+
+        return Response.status(Response.Status.NO_CONTENT).build();
+    }
+
+    @Path("/getRestaurantsByName")
+    @GET
+    public Response getRestaurantsByName(YelpRequest yelpRequest){
+        // TODO: Validation
+
+        List<TableResponseFieldObject> tableResponseFieldObjects = userDAO.selectByName(yelpRequest.getName());
 
         for (TableResponseFieldObject tableResponseFieldObject : tableResponseFieldObjects){
             System.out.println(tableResponseFieldObject.toString());

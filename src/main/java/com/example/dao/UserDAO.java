@@ -30,6 +30,11 @@ public interface UserDAO {
     @Mapper(TableMapper.class)
     List<TableResponseFieldObject> selectAllFromTable();
 
+    @SqlQuery("select * from YELP_NEARBY_RESTAURANTS where zipcode = :zipCode")
+    @Mapper(TableMapper.class)
+    List<TableResponseFieldObject> selectByZip( @Bind("zipCode") int zipcode);
+
     @SqlQuery("select * from YELP_NEARBY_RESTAURANTS where name = :name")
-    boolean selectByZip( @Bind("name") String name);
+    @Mapper(TableMapper.class)
+    List<TableResponseFieldObject> selectByName( @Bind("name") String name);
 }
