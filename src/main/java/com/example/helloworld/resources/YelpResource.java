@@ -8,10 +8,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
@@ -35,9 +34,11 @@ public class YelpResource {
 
     // https://stackoverflow.com/questions/62658941/error-write-eproto-34557064error100000f7ssl-routinesopenssl-internalwrong
     @Path("/addNearbyRestaurants")
-    @GET
+    @POST
     public Response addNearbyRestaurants(@QueryParam("zipCode" ) Integer zipCode,
                                          @QueryParam("limit") Optional<Integer> limit) {
+        // TODO: Validation
+
         String requestUrl = "https://"
                             + API_HOST
                             + BUSINESS_PATH
@@ -49,14 +50,14 @@ public class YelpResource {
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
             connection.setRequestProperty("Authorization", "Bearer " + API_KEY);
+
             try (BufferedReader in = new BufferedReader(new InputStreamReader(
                     connection.getInputStream()))){
                 String inputLine;
                 while ((inputLine = in.readLine()) != null) {
-//                    System.out.println("Raw response: " + inputLine + "\n");
                     List<YelpRestaurantResponse> restaurantResponses = YelpResponseHandler.parseYelpResponse(inputLine);
-                    System.out.println("Parsed Response: " + Arrays.toString(restaurantResponses.toArray()) + "\n");
                     for (YelpRestaurantResponse restaurantResponse : restaurantResponses){
+                        // TODO: Can use batch insert instead of single inserts
                         userDAO.insertIntoRestaurantsTable(restaurantResponse.restaurantName,
                                                            restaurantResponse.restaurantURL,
                                                            restaurantResponse.restaurantRating,
